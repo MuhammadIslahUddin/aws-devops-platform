@@ -1,0 +1,18 @@
+{
+  "name": "aws-devops-app",
+  "version": "1.0.0",
+  "description": "Node.js API for AWS DevOps CI/CD Platform",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node tests/health.test.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "author": "Muhammad Islah Uddin",
+  "license": "MIT"
+}
