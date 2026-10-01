@@ -89,20 +89,90 @@ MIT License
 
 Copyright (c) 2026 Muhammad Islah Uddin
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+## 🔧 How It Works
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+### 1. Trigger
+- Push any commit to `main` branch → pipeline starts automatically
+
+### 2. Build Stage
+- Check out code
+- Authenticate with AWS using stored credentials
+- Log in to Amazon ECR
+- Build Docker image with commit SHA as version tag
+- Push image to private ECR repository
+
+### 3. Deploy Stage
+- SSH into EC2 instance using encrypted private key
+- Authenticate Docker to ECR
+- Pull latest image
+- Stop & remove previous container
+- Start updated container with port mapping
+- App live at public endpoint
+
+### 4. Result
+- ✅ Deployment complete — typically **under 45 seconds**
+- 🌐 App accessible at: **http://34.201.210.235**
+
+---
+
+## 🛠️ Local Setup
+
+```bash
+# Clone repository
+git clone https://github.com/MuhammadIslahUddin/aws-devops-platform.git
+cd aws-devops-platform
+
+# Configure SSH key
+chmod 600 ~/.ssh/aws-devops-key
+ssh -i ~/.ssh/aws-devops-key ubuntu@34.201.210.235
+
+# Run locally
+cd app
+docker build -t aws-devops-app .
+docker run -p 3000:3000 aws-devops-app
+🔐 GitHub Secrets Configuration
+Repository → Settings → Secrets and variables → Actions
+Table
+Secret Name	Purpose
+AWS_ACCESS_KEY_ID	AWS programmatic access key ID
+AWS_SECRET_ACCESS_KEY	AWS programmatic secret key
+EC2_SSH_PRIVATE_KEY	Full SSH private key block (including BEGIN/END lines)
+📊 AWS Resources (us-east-1)
+Table
+Resource	Value
+Account ID	449952321810
+EC2 Instance ID	i-0ecd9ddd496164a98
+Public IP	34.201.210.235
+ECR Registry	449952321810.dkr.ecr.us-east-1.amazonaws.com
+ECR Repository	aws-devops-platform-repo
+SSH Key Name	aws-devops-platform-ssh-key
+Instance Type	t3.micro
+Platform	Ubuntu 22.04 LTS (Jammy)
+✅ Status
+Table
+Feature	Status
+Infrastructure provisioning	✅ Complete
+Dockerfile & container build	✅ Verified
+ECR repository & authentication	✅ Active
+GitHub Actions pipeline	✅ Fully automated
+EC2 SSH deployment	✅ Operational
+Live endpoint accessibility	✅ http://34.201.210.235
+Auto-deploy on code push	✅ Working
+🚀 Usage
+bash
+# Make changes → commit → push → watch it deploy
+git add .
+git commit -m "feat: Add new feature"
+git push
+
+# Monitor progress
+# → https://github.com/MuhammadIslahUddin/aws-devops-platform/actions
+📅 Timeline
+Oct 2, 2026 — Initial deployment platform goes live ✅
+Next — OIDC migration, testing gates, monitoring, IP restriction
+👤 Author
+Muhammad Islah Uddin
+GitHub: @MuhammadIslahUddin
+Project: aws-devops-platform
+
