@@ -1,0 +1,23 @@
+# Node.js
+node_modules/
+npm-debug.log
+
+# Terraform
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/.terraform.lock.hcl
+
+# Environment & secrets
+.env
+*.pem
+*.key
+id_rsa*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Screenshots & docs (keep clean)
+docs/screenshots/
+
